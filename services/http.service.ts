@@ -1,11 +1,10 @@
 import axios from "axios";
 import { toast } from "sonner";
+import { API_BASE } from "./api-client";
 
 const { CancelToken } = axios;
 
 let source = CancelToken.source();
-
-export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://vcj-backend.vercel.app/api";
 
 axios.defaults.baseURL = API_BASE;
 
@@ -13,15 +12,18 @@ axios.interceptors.request.use(
   (config) => ({ ...config, cancelToken: source.token }),
   (error) => Promise.reject(error)
 );
+
 axios.interceptors.response.use(
   (res) => {
     const { message } = res.data;
-    toast.success(message || "Fetch successful");
+    if (res.config.method !== 'get') {
+      toast.success(message || "Fetch successful");
+    }
 
     return res;
   },
   (err) => {
-    const { message: msg, response } = err;
+    const { response } = err;
     const message = response?.data?.message;
     if (!response) throw err;
 
@@ -40,6 +42,7 @@ axios.interceptors.response.use(
     throw err;
   }
 );
+
 const http = {
   get: axios.get,
   put: axios.put,

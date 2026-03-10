@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Phone, Lock, Loader2, Eye, EyeOff } from "lucide-react";
 import { Logo } from "@/components/logo/Logo";
-import { API_BASE } from "@/services/http.service";
+import { API_BASE, ENDPOINTS } from "@/services/api-client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -39,7 +39,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const loginEndpoint = `${API_BASE}/users/login`;
+      const loginEndpoint = `${API_BASE}${ENDPOINTS.LOGIN}`;
       const response = await fetch(loginEndpoint, {
         method: "POST",
         headers: {
