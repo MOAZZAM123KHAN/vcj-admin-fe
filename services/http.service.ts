@@ -5,7 +5,9 @@ const { CancelToken } = axios;
 
 let source = CancelToken.source();
 
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://vcj-backend.vercel.app/api";
+
+axios.defaults.baseURL = API_BASE;
 
 axios.interceptors.request.use(
   (config) => ({ ...config, cancelToken: source.token }),
